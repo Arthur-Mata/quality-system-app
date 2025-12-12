@@ -13,16 +13,16 @@ V0.1.0 alpha
 using namespace std;
 
 
-//----Clase Persona----
+//----Clase Person----
 
 
-class Persona {
+class Person {
     private: //Atributos
         std::string name, last_name, address, gender, phone_number, email, num_id;
         int day, month, year; //fecha de nacimiento
     
     public: //Constructor
-        Persona(std::string n, std::string ln, std::string addr, std::string g, std::string phone, std::string mail, std::string _num_id,
+        Person(std::string n, std::string ln, std::string addr, std::string g, std::string phone, std::string mail, std::string _num_id,
         int d, int m, int y)
         :name(n), last_name(ln), address(addr), gender(g), phone_number(phone), email(mail), day(d), month(m), year(y) {}
 
@@ -50,3 +50,5 @@ class Persona {
         }
 
 };
+
+
