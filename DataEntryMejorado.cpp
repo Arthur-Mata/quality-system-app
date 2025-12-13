@@ -10,6 +10,7 @@ v0.2.0-alpha
 #include <algorithm>
 #include <stdexcept>
 #include <ctime> // para uso de calculo de edad en clase Persona
+#include <time.h>
 using namespace std;
 
 /* Librerías para un futuro:
@@ -57,15 +58,18 @@ class Person {
         //Métodos SET
         void setName(const std::string& n) { name = n; } //métodos para guardar el nombre por teclado en la variable designada
         void setLastName(const std::string& ln) { last_name = ln;}
-        void setEmail(const std::string& mail) { email = mail; }
 
         //Validación de formato de correo
 
         void setEmail(const std::string& mail) {
-            if (email.find('@') != std::string::npos && mail.find('.', mail.find('@')) != std::string::npos)
+            if (mail.find('@') != std::string::npos && 
+                mail.find('.', mail.find('@')) != std::string::npos)
+                {
                 this->email = mail;
-            else  
+                }
+            else  {
                 throw std::invalid_argument("Invalid email format, try again");
+            }
         }
 
         //Método para calcular edad
@@ -127,11 +131,15 @@ class Employee :  public Person {
         int calculateSeniority() const {
             std::time_t now = std::time(nullptr);
             std::tm end = isActive() ? *std::localtime(&now) : date_end;
-            std::time_t entry_time = std::mktime(&date_entry); // CORREGIR ESTE ERROR!!!!
+
+            std::tm entryCopy = date_entry;
+
+            std::time_t entry_time = std::mktime(&entryCopy);
             std::time_t end_time = std::mktime(&end);
+
             double seconds = std::difftime(end_time, entry_time);
-            return static_cast<int>(seconds / (365.25 * 24 * 60 * 60)); //años
-        }
+            return static_cast<int>(seconds / (365.25 * 24 * 60 * 60)); // años
+    }
 
         void showInformation() const {
             std::cout << "Payroll Number: " << payroll_number << "\n"
@@ -143,3 +151,25 @@ class Employee :  public Person {
                     
         }
 };
+
+
+int main() {
+    //1.- Inicializamos la fecha de ingreso
+    std::tm entry = {};
+    entry.tm_mday = 10;
+    entry.tm_mon = 0; //enero (0 = enero)
+    entry.tm_year = 2020 - 1900; //año - 1900
+
+    //2.- Inicializamos la fecha de salida
+    std::tm end = {} ;
+    end.tm_mday = 5;
+    end.tm_mon = 11; //diciembre
+    end.tm_year = 2024 -1900;
+
+    //3.- Creamos el empleado
+    Employee emp(
+        "PN001", "Inspector", "Calidad", "Activo", entry, end, 15000.0f, "Sergio Arturo", "Mata Contreras", "San Luis Potosí", "Masculino", "4441234567", "artmata22@outlook.com", "2000052001", 20, 05, 2000
+    );
+
+    return 0;
+}
