@@ -152,6 +152,36 @@ class Employee :  public Person {
         }
 };
 
+//----Clase AdministrativeStaff (herencia Person)----
+
+class AdministrativeStaff : public Employee {
+    private:
+        std::string responsible_area;
+        int access_level;
+
+    public: //constructor
+        AdministrativeStaff(std::string pn, std::string jp, std::string dep, std::string stat, const std::tm& dentry, const std::tm& dend,
+             float salary, std::string n, std::string ln, std::string addr, std::string g, std::string phone,
+              std::string mail, std::string _num_id, int d, int m, int y, std::string ra, int accl)
+              : Employee(pn, jp, dep, stat, dentry, dend, salary, n, ln, addr, g, phone, mail, _num_id, d, m, y),
+              responsible_area(ra), access_level(accl) {}
+    
+    //Métodos SET
+    std::string getResponsibleArea() const { return responsible_area; }
+    int getAccessLevel() const { return access_level; }
+
+    //Lógica de permisos
+    bool hasPermission(int requiredLevel) const {
+        return access_level >= requiredLevel;
+    }
+    //Acción típica de administrativo
+    void showInformation() const {
+        Employee::showInformation();
+        std::cout << "Responsible área: " << responsible_area << "\n"
+                    << "Access level: " << access_level << "\n";
+    }
+};
+
 
 int main() {
     //1.- Inicializamos la fecha de ingreso
@@ -166,10 +196,33 @@ int main() {
     end.tm_mon = 11; //diciembre
     end.tm_year = 2024 -1900;
 
-    //3.- Creamos el empleado
+    //3.- Creamos el empleado regular
     Employee emp(
-        "PN001", "Inspector", "Calidad", "Activo", entry, end, 15000.0f, "Sergio Arturo", "Mata Contreras", "San Luis Potosí", "Masculino", "4441234567", "artmata22@outlook.com", "2000052001", 20, 05, 2000
+        "PN001", "Inspector", "Calidad", "Activo", entry, end, 15000.0f, "Sergio Arturo", "Mata Contreras", "San Luis Potosí",
+         "Masculino", "4441234567", "artmata22@outlook.com", "2000052001", 20, 05, 2000
+    );
+    
+    std::cout << "\n--- Información del empleado---\n";
+    emp.showInformation();
+    std::cout << "Antigüedad: " << emp.calculateSeniority() << " años\n";
+
+    //4.- Creamos un administrativo
+
+    AdministrativeStaff admin(
+        "PN002", "Coordinador", "Finanzas", "Activo", entry, end, 20000.0f, "Aurora", "Hernández", "San Luis Potosí",
+         "Femenino", "4449876541", "auro24@gmail.com", "ID00002", 10, 4, 1985
     );
 
+    std::cout << "\n---Información del administrativo---\n";
+    admin.showInformation();
+    std::cout << "Antigüedad: " << admin.calculateSeniority() << " años\n";
+
+    //5.- Prueba de permisos (considerar un rango de permisos)
+    std::cout << "¿Tiene acceso nivel 3? " << (admin.hasPermission(3) ? "Sí" : "No") << "\n";
+    std::cout << "¿Tiene acceso nivel 5? " << (admin.hasPermission(5) ? "Sí" : "No") << "\n";
+
+    //6.- Simulación de acción administrativa
+    admin.generateDocument("Reporte mensual");
+    
     return 0;
 }
