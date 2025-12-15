@@ -180,6 +180,9 @@ class AdministrativeStaff : public Employee {
         std::cout << "Responsible área: " << responsible_area << "\n"
                     << "Access level: " << access_level << "\n";
     }
+
+    //Método de crear documentación
+    void generateDocument(const std::string& docName) const { std::cout <<"Generando documento: " << docName << "\n"; }  
 };
 
 
@@ -210,7 +213,7 @@ int main() {
 
     AdministrativeStaff admin(
         "PN002", "Coordinador", "Finanzas", "Activo", entry, end, 20000.0f, "Aurora", "Hernández", "San Luis Potosí",
-         "Femenino", "4449876541", "auro24@gmail.com", "ID00002", 10, 4, 1985
+         "Femenino", "4449876541", "auro24@gmail.com", "ID00002", 10, 4, 1985, "Finanzas", 4
     );
 
     std::cout << "\n---Información del administrativo---\n";
