@@ -1,5 +1,7 @@
-/*Arturo Mata, Data Entry Mejorado
-v0.2.0-alpha
+/*Arturo Mata
+SGC - Sistema de Gestión de Calidad
+Fecha: 2024-06-15
+Versión: v0.2.0-alpha
 */
 
 #include <iostream> //in y out, funciones de entrada de texto por teclado
@@ -38,6 +40,7 @@ class Person {
         int year; //fecha de nacimiento
     
     public: //Constructor
+        Person();
         Person(std::string n, std::string ln, std::string addr, std::string g, std::string phone, std::string mail, std::string _num_id,
         int d, int m, int y)
         :name(n), last_name(ln), address(addr), gender(g), phone_number(phone), email(mail), day(d), month(m), year(y) {}
@@ -59,8 +62,7 @@ class Person {
         void setName(const std::string& n) { name = n; } //métodos para guardar el nombre por teclado en la variable designada
         void setLastName(const std::string& ln) { last_name = ln;}
 
-        //Validación de formato de correo
-
+        //Validación de formato de correo electrónico
         void setEmail(const std::string& mail) {
             if (mail.find('@') != std::string::npos && 
                 mail.find('.', mail.find('@')) != std::string::npos)
@@ -72,7 +74,7 @@ class Person {
             }
         }
 
-        //Método para calcular edad
+    //Método para calcular edad
     int calculateAge() const {
         time_t t = time(nullptr);
         tm* now = localtime(&t);
@@ -98,6 +100,10 @@ class Person {
     }
 };
 
+Person::Person() //constructor por defecto
+    :name(""), last_name(""), address(""), gender(""), phone_number(""), email(""), num_id(""), day(0), month(0), year(0) {}
+
+
 //---- Clase Employee ----
 
 class Employee :  public Person {
@@ -117,6 +123,13 @@ class Employee :  public Person {
         :Person(n, ln, addr, g, phone, mail, _num_id, d, m, y), 
         payroll_number(pn), job_position(jp), department(dep), status(stat), date_entry(dentry),
          date_end(dend), salary(salary) {}
+        
+        Employee::Employee()
+            :payroll_number(""), job_position(""), department(""), status(""), date_entry({}), date_end({}), salary(0.0f)  
+        {
+            // Constructor por defecto
+        }   
+
 
         //Métodos GET
         std::string getPayrollNumber() const { return payroll_number; }
@@ -201,8 +214,8 @@ int main() {
 
     //3.- Creamos el empleado regular
     Employee emp(
-        "PN001", "Inspector", "Calidad", "Activo", entry, end, 15000.0f, "Sergio Arturo", "Mata Contreras", "San Luis Potosí",
-         "Masculino", "4441234567", "artmata22@outlook.com", "2000052001", 20, 05, 2000
+        " ", " ", " ", " ", entry, end, 0.0f, " ", " ", " ",
+         " ", " ", " ", " ", 0, 0, 0
     );
     
     std::cout << "\n--- Información del empleado---\n";
@@ -212,8 +225,8 @@ int main() {
     //4.- Creamos un administrativo
 
     AdministrativeStaff admin(
-        "PN002", "Coordinador", "Finanzas", "Activo", entry, end, 20000.0f, "Aurora", "Hernández", "San Luis Potosí",
-         "Femenino", "4449876541", "auro24@gmail.com", "ID00002", 10, 4, 1985, "Finanzas", 4
+        " ", " ", " ", " ", entry, end, 0.0f, " ", " ", " ",
+         " ", " ", " ", " ", 0, 0, 0, " ", 0
     );
 
     std::cout << "\n---Información del administrativo---\n";
