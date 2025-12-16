@@ -116,20 +116,22 @@ class Employee :  public Person {
         std::tm date_end; //fecha de ingreso y fin de labores.
         float salary;
 
-    public: //constructor
-        Employee(std::string pn, std::string jp, std::string dep, std::string stat, const std::tm& dentry, const std::tm& dend,
-             float salary, std::string n, std::string ln, std::string addr, std::string g, std::string phone,
-              std::string mail, std::string _num_id, int d, int m, int y)  
-        :Person(n, ln, addr, g, phone, mail, _num_id, d, m, y), 
-        payroll_number(pn), job_position(jp), department(dep), status(stat), date_entry(dentry),
-         date_end(dend), salary(salary) {}
-        
-        Employee::Employee()
-            :payroll_number(""), job_position(""), department(""), status(""), date_entry({}), date_end({}), salary(0.0f)  
-        {
-            // Constructor por defecto
-        }   
+    public:
+    Employee(); //Constructor por defecto (sólo declaración)
 
+    //Constructor completo
+    Employee(std::string pn, std::string jp, std::string dep, std::string stat, const std::tm& dentry, const std::tm& dend,
+             float salary, std::string n, std::string ln, std::string addr, std::string g, std::string phone,
+              std::string mail, std::string _num_id, int d, int m, int y)
+        :Person(n, ln, addr, g, phone, mail, _num_id, d, m, y), 
+        payroll_number(pn),
+        job_position(jp),
+        department(dep),
+        status(stat),
+        date_entry(dentry),
+        date_end(dend),
+        salary(salary)
+    {}
 
         //Métodos GET
         std::string getPayrollNumber() const { return payroll_number; }
@@ -141,6 +143,7 @@ class Employee :  public Person {
         std::tm getDateEnd() const { return date_end; }
         float getSalary() const { return salary; }
 
+        //Cálculo de antigüedad
         int calculateSeniority() const {
             std::time_t now = std::time(nullptr);
             std::tm end = isActive() ? *std::localtime(&now) : date_end;
@@ -154,6 +157,7 @@ class Employee :  public Person {
             return static_cast<int>(seconds / (365.25 * 24 * 60 * 60)); // años
     }
 
+        //Mostrar información del empleado
         void showInformation() const {
             std::cout << "Payroll Number: " << payroll_number << "\n"
                         << "Position: " << job_position << "\n"
@@ -164,6 +168,20 @@ class Employee :  public Person {
                     
         }
 };
+
+//Implementación del constructor por defecto
+Employee::Employee()
+    :Person(),
+    payroll_number(""),
+    job_position(""),
+    department(""),
+    status(""),
+    date_entry({}),
+    date_end({}),
+    salary(0.0f)
+    
+    {}
+
 
 //----Clase AdministrativeStaff (herencia Person)----
 
