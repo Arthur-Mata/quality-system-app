@@ -61,6 +61,10 @@ class Person {
         //Métodos SET
         void setName(const std::string& n) { name = n; } //métodos para guardar el nombre por teclado en la variable designada
         void setLastName(const std::string& ln) { last_name = ln;}
+        void setAddress(const std::string& addr) { address = addr; }
+        void setGender(const std::string& g) { gender = g; }
+        void setPhoneNumber(const std::string& phone) { phone_number = phone; }
+        
 
         //Validación de formato de correo electrónico
         void setEmail(const std::string& mail) {
@@ -72,6 +76,15 @@ class Person {
             else  {
                 throw std::invalid_argument("Invalid email format, try again");
             }
+        }
+
+        void setNumId(const std::string& id) { num_id = id; }
+
+        //Método calcular fecha de nacimiento / edad
+        void setBirthDate(int d, int m, int y) {
+            day = d;
+            month = m;
+            year = y;
         }
 
     //Método para calcular edad
@@ -167,6 +180,8 @@ class Employee :  public Person {
                         //agregar fecha de ingreso y/o fin (opcional)
                     
         }
+        
+        void setSalary(float s) { salary = s; }
 };
 
 //Implementación del constructor por defecto
@@ -216,8 +231,8 @@ class AdministrativeStaff : public Employee {
     void generateDocument(const std::string& docName) const { std::cout <<"Generando documento: " << docName << "\n"; }  
 };
 
-
-int main() {
+//Menú de pruebas
+/*int main() {
     //1.- Inicializamos la fecha de ingreso
     std::tm entry = {};
     entry.tm_mday = 10;
@@ -258,5 +273,123 @@ int main() {
     //6.- Simulación de acción administrativa
     admin.generateDocument("Reporte mensual");
     
+    return 0;
+}*/
+
+Employee capturarEmpleado() {
+    Employee emp;
+
+    std::string input;
+    float salario;
+    int d, m, y;
+
+    std::cin.ignore(); // limpiar buffer
+
+    std::cout << "\n--- Registro de nuevo empleado ---\n";
+
+    std::cout << "Nombre: ";
+    std::getline(std::cin, input);
+    emp.setName(input);
+
+    std::cout << "Apellido: ";
+    std::getline(std::cin, input);
+    emp.setLastName(input);
+
+    std::cout << "Direccion: ";
+    std::getline(std::cin, input);
+    emp.setAddress(input);
+
+    std::cout << "Genero: ";
+    std::getline(std::cin, input);
+    emp.setGender(input);
+
+    std::cout << "Telefono: ";
+    std::getline(std::cin, input);
+    emp.setPhoneNumber(input);
+
+    std::cout << "Email: ";
+    std::getline(std::cin, input);
+    emp.setEmail(input);
+
+    std::cout << "ID: ";
+    std::getline(std::cin, input);
+    emp.setNumId(input);
+
+    std::cout << "Fecha de nacimiento (dia mes año): ";
+    std::cin >> d >> m >> y;
+    emp.setBirthDate(d, m, y);
+
+    std::cout << "Salario: ";
+    std::cin >> salario;
+    emp.setSalary(salario);
+
+    std::cin.ignore();
+
+    std::cout << "\nEmpleado registrado correctamente.\n";
+
+    return emp;
+}
+
+
+// ===============================
+//   Función de ingreso (login)
+// ===============================
+void login() {
+    std::string user, pass;
+
+    std::cin.ignore();
+
+    std::cout << "\n--- Ingresar al sistema ---\n";
+    std::cout << "Usuario: ";
+    std::getline(std::cin, user);
+
+    std::cout << "Contraseña: ";
+    std::getline(std::cin, pass);
+
+    // Por ahora es un login ficticio
+    if (user == "admin" && pass == "1234") {
+        std::cout << "Acceso concedido.\n";
+    } else {
+        std::cout << "Credenciales incorrectas.\n";
+    }
+}
+
+
+// ===============================
+//   MENÚ PRINCIPAL
+// ===============================
+int main() {
+    std::vector<Employee> empleados; // almacena empleados registrados
+
+    int opcion;
+
+    do {
+        std::cout << "\n===== MENU Sistema de Gestión de Calidad =====\n";
+        std::cout << "1. Registrar nuevo empleado\n";
+        std::cout << "2. Ingresar\n";
+        std::cout << "3. Salir\n";
+        std::cout << "Seleccione una opcion: ";
+        std::cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                Employee nuevo = capturarEmpleado();
+                empleados.push_back(nuevo);
+                break;
+            }
+            case 2:
+                login();
+                break;
+
+            case 3:
+                std::cout << "Saliendo del sistema...\n";
+                break;
+
+            default:
+                std::cout << "Opcion no valida.\n";
+        }
+
+    } while (opcion != 3);
+
     return 0;
 }
